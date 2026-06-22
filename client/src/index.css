@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS variables for colors that use Tailwind opacity modifiers ── */
+:root {
+  --c-primary:         0 107 95;    /* #006b5f */
+  --c-outline-variant: 186 202 197; /* #bacac5 */
+  --c-surface-dim:     203 219 245; /* #cbdbf5 */
+}
+
+html.dark {
+  --c-primary:         45 212 191;  /* #2dd4bf — bright teal readable on dark */
+  --c-outline-variant: 42 63 62;    /* #2a3f3e */
+  --c-surface-dim:     44 72 71;    /* #2c4847 */
+}
+
+/* ── Dark mode overrides for fixed-hex colors ── */
+html.dark body { background-color: #0d1b1a; color: #d8efec; }
+
+/* Surfaces */
+html.dark .bg-surface,
+html.dark .bg-background,
+html.dark .bg-surface-bright      { background-color: #0d1b1a; }
+html.dark .bg-surface-container-lowest { background-color: #182423; }
+html.dark .bg-surface-container-low    { background-color: #1e2f2e; }
+html.dark .bg-surface-container        { background-color: #243a39; }
+html.dark .bg-surface-container-high   { background-color: #2c4847; }
+html.dark .bg-surface-container-highest { background-color: #364f4e; }
+html.dark .bg-surface-variant          { background-color: #243a39; }
+
+/* Text */
+html.dark .text-on-surface         { color: #d8efec; }
+html.dark .text-on-surface-variant { color: #9ab8b5; }
+html.dark .text-on-background      { color: #d8efec; }
+
+/* Primary containers (primary itself is auto-swapped via CSS var) */
+html.dark .bg-primary-container      { background-color: #004d45; }
+html.dark .text-on-primary-container { color: #62fae3; }
+html.dark .text-on-primary           { color: #003730; }
+
+/* Error */
+html.dark .text-error             { color: #ffb4ab; }
+html.dark .bg-error-container     { background-color: #93000a; }
+html.dark .text-on-error-container { color: #ffdad6; }
+
+/* Outline (plain, without opacity — opacity variant covered by CSS var) */
+html.dark .border-outline-variant { border-color: #2a3f3e; }
+html.dark .text-outline           { color: #4a6360; }
+
+/* Shadows — deepen in dark */
+html.dark .shadow-sm  { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.5); }
+html.dark .shadow-md  { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5); }
+html.dark .shadow-lg  { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.5); }
+
+/* ── Base styles ── */
+@layer base {
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@layer utilities {
+  .bg-pattern {
+    background-image: radial-gradient(#d3e4fe 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}

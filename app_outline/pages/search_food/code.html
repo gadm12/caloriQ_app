@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CaloriQ - Add Food</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#cbdbf5",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#ffad3a",
+                        "on-background": "#0b1c30",
+                        "outline": "#6b7a76",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "outline-variant": "#bacac5",
+                        "on-primary-container": "#00574d",
+                        "surface-container-highest": "#d3e4fe",
+                        "inverse-primary": "#3cddc7",
+                        "surface-container": "#e5eeff",
+                        "primary-fixed-dim": "#3cddc7",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-variant": "#d3e4fe",
+                        "on-primary-fixed-variant": "#005047",
+                        "primary-fixed": "#62fae3",
+                        "background": "#f8f9ff",
+                        "tertiary": "#855300",
+                        "secondary-container": "#86f2e4",
+                        "on-secondary-container": "#006f66",
+                        "on-secondary-fixed-variant": "#005049",
+                        "on-surface-variant": "#3c4a46",
+                        "surface-container-low": "#eff4ff",
+                        "error-container": "#ffdad6",
+                        "secondary": "#006a61",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#006b5f",
+                        "secondary-fixed": "#89f5e7",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#2dd4bf",
+                        "inverse-surface": "#213145",
+                        "on-error": "#ffffff",
+                        "primary": "#006b5f",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#00201c",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-tertiary-container": "#6d4400",
+                        "tertiary-fixed": "#ffddb8",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#00201d",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary-fixed": "#2a1700",
+                        "surface-bright": "#f8f9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "container-max": "1200px",
+                        "xl": "48px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "stats-number": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "stats-number": ["20px", { "lineHeight": "24px", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-background shadow-sm docked full-width top-0 sticky z-40">
+<div class="flex justify-between items-center px-md py-sm w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-sm text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined text-2xl" data-icon="nutrition">nutrition</span>
+<span class="font-headline-md text-headline-md font-bold">CaloriQ</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden flex items-center justify-center">
+<img alt="User profile settings" class="object-cover w-full h-full" data-alt="A small circular avatar placeholder showing a generic user silhouette or abstract colorful pattern. Designed to fit in a top navigation bar. Clean, modern, bright colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNy0GolEFu6LMRpfDdRPRNgc1OFLj-ZJfglqzAVuWPaU_EINWA8QiFnU88vy1O1hb62lZaS8FBHFK6eKM97ktzDEzZWqBRft_xfQdOFm12LGCXBRBGQ72Zm2_-zJhg3Lilrn7dz-95nghXeu58UyZjSjYrGKsc1csHUaTGCfSDCf4wDCWav2ZUBY3zHjE8HF5PzkpWqfho-svewExUT24tpYPqALXrTNGbGGoPjQeA8Ff_6Xg2WC2QhDd07HYx27IkBkW71yAbaBo"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-container-max mx-auto px-md mt-md lg:mt-lg space-y-xl">
+<!-- Search Section -->
+<section class="space-y-md">
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Add Food</h1>
+<div class="relative w-full max-w-2xl">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant z-10" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container rounded-xl border-none focus:ring-2 focus:ring-primary shadow-sm font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant transition-shadow duration-200" placeholder="Search for food..." type="text"/>
+</div>
+</section>
+<!-- Search Results (Simulated View) -->
+<section class="max-w-2xl bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden">
+<ul class="divide-y divide-outline-variant/20">
+<!-- Result 1 -->
+<li class="p-md hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-headline-md text-[18px] text-on-surface font-semibold group-hover:text-primary transition-colors">Greek Yogurt</p>
+<p class="font-body-md text-on-surface-variant text-sm mt-xs">100g - 80 kcal</p>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</li>
+<!-- Result 2 (Expanded / Tapped State Simulation) -->
+<li class="p-md bg-surface-container-low transition-colors cursor-default border-l-4 border-primary">
+<div class="flex justify-between items-start mb-md">
+<div>
+<p class="font-headline-md text-[18px] text-primary font-bold">Apple</p>
+<p class="font-body-md text-on-surface-variant text-sm mt-xs">Medium (182g) - 95 kcal</p>
+</div>
+<button class="w-8 h-8 rounded-full text-on-surface-variant flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="close">close</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md p-md bg-surface-container-lowest rounded-lg border border-outline-variant/30">
+<div class="relative">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Serving Size (g)</label>
+<input class="w-full px-3 py-2 bg-surface-container rounded-lg border-none focus:ring-2 focus:ring-primary shadow-sm font-body-md text-body-md text-on-surface" type="number" value="182"/>
+</div>
+<div class="relative">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Meal Category</label>
+<select class="w-full px-3 py-2 bg-surface-container rounded-lg border-none focus:ring-2 focus:ring-primary shadow-sm font-body-md text-body-md text-on-surface appearance-none">
+<option>Breakfast</option>
+<option>Lunch</option>
+<option>Dinner</option>
+<option selected="">Snacks</option>
+</select>
+</div>
+<div class="md:col-span-2 pt-sm">
+<button class="w-full py-3 bg-primary text-on-primary font-label-md text-label-md font-bold rounded-lg shadow-sm hover:shadow-md hover:bg-primary/90 transition-all active:scale-[0.98]">
+                                Add to Log
+                            </button>
+</div>
+</div>
+</li>
+<!-- Result 3 -->
+<li class="p-md hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-headline-md text-[18px] text-on-surface font-semibold group-hover:text-primary transition-colors">Chicken Breast</p>
+<p class="font-body-md text-on-surface-variant text-sm mt-xs">100g - 165 kcal</p>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</li>
+</ul>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full rounded-lg mb-xl bg-tertiary-container dark:bg-tertiary shadow-sm flex flex-col md:flex-row items-center justify-center gap-md p-lg mb-24 max-w-container-max mx-auto text-center mt-xl">
+<p class="font-body-md text-body-md text-on-tertiary-container dark:text-on-tertiary">
+<span class="material-symbols-outlined align-middle mr-1 text-primary filled" data-icon="favorite">favorite</span>
+            Help fight hunger around the world
+        </p>
+<a class="underline font-bold text-on-tertiary-container font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-[0.98]" href="#">Donate Now</a>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container-lowest dark:bg-inverse-surface shadow-lg md:hidden">
+<div class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center pt-2 pb-safe px-2">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md mt-1 text-[10px]">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-md text-label-md mt-1 text-[10px]">Log</span>
+</a>
+<!-- Active Tab: Add -->
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-4 py-1 hover:bg-surface-container-high transition-all scale-90 duration-200" href="#">
+<span class="material-symbols-outlined filled" data-icon="add_circle">add_circle</span>
+<span class="font-label-md text-label-md mt-1 text-[10px] font-bold">Add</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-label-md text-label-md mt-1 text-[10px]">Progress</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md mt-1 text-[10px]">Profile</span>
+</a>
+</div>
+</nav>
+<style>
+        /* Safe area padding for mobile bottom bar */
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
+    </style>
+</body></html>
