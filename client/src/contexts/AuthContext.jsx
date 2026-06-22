@@ -1,43 +1,112 @@
-import { createContext, useContext, useRef, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
 
 const AuthContext = createContext(null)
 
+function profileToUser(authUser, profile) {
+  const parts = (profile?.name || '').split(' ')
+  const firstName = parts[0] || ''
+  const lastName = parts.slice(1).join(' ')
+  return {
+    id: authUser.id,
+    email: authUser.email,
+    firstName,
+    lastName,
+    calorieGoal: profile?.calorie_goal ?? 2200,
+    proteinGoal: profile?.protein_goal ?? 150,
+    carbsGoal:   profile?.carbs_goal   ?? 250,
+    fatGoal:     profile?.fat_goal     ?? 70,
+  }
+}
+
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  // Keyed by email so login() can look up registered names
-  const store = useRef({})
+  const [user, setUser]       = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  function register({ firstName, lastName, email, password }) {
-    const record = { firstName, lastName, email, password }
-    store.current[email.toLowerCase()] = record
-    setUser(record)
-  }
-
-  function login({ email, password }) {
-    const stored = store.current[email.toLowerCase()]
-    if (stored) {
-      setUser(stored)
-    } else {
-      // Demo fallback: no prior registration in this session
-      setUser({ firstName: email.split('@')[0], lastName: '', email, password })
-    }
-  }
-
-  function logout() {
-    setUser(null)
-  }
-
-  function updateUser(updates) {
-    setUser(prev => {
-      const next = { ...prev, ...updates }
-      // Keep the store in sync so a re-login gets the updated name
-      if (next.email) store.current[next.email.toLowerCase()] = next
-      return next
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        loadProfile(session.user)
+      } else {
+        setLoading(false)
+      }
     })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        loadProfile(session.user)
+      } else {
+        setUser(null)
+        setLoading(false)
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  async function loadProfile(authUser) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', authUser.id)
+      .single()
+    setUser(profileToUser(authUser, profile))
+    setLoading(false)
+  }
+
+  // Returns { needsConfirmation: true } if email confirmation is required
+  async function register({ firstName, lastName, email, password }) {
+    const { data, error } = await supabase.auth.signUp({ email, password })
+    if (error) throw error
+
+    if (data.user) {
+      await supabase.from('profiles').insert({
+        id:   data.user.id,
+        name: `${firstName} ${lastName}`.trim(),
+      })
+    }
+
+    return { needsConfirmation: !data.session }
+  }
+
+  async function login({ email, password }) {
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) throw error
+  }
+
+  async function logout() {
+    await supabase.auth.signOut()
+  }
+
+  async function updateUser(updates) {
+    const authUpdates = {}
+    if (updates.email)    authUpdates.email    = updates.email
+    if (updates.password) authUpdates.password = updates.password
+    if (Object.keys(authUpdates).length) {
+      const { error } = await supabase.auth.updateUser(authUpdates)
+      if (error) throw error
+    }
+
+    const profileUpdates = {}
+    const firstName = updates.firstName ?? user.firstName
+    const lastName  = updates.lastName  ?? user.lastName
+    if (updates.firstName !== undefined || updates.lastName !== undefined) {
+      profileUpdates.name = `${firstName} ${lastName}`.trim()
+    }
+    if (Object.keys(profileUpdates).length) {
+      await supabase.from('profiles').update(profileUpdates).eq('id', user.id)
+    }
+
+    setUser(prev => ({
+      ...prev,
+      ...updates,
+      firstName: updates.firstName ?? prev.firstName,
+      lastName:  updates.lastName  ?? prev.lastName,
+    }))
   }
 
   return (
-    <AuthContext.Provider value={{ user, register, login, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, loading, register, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )

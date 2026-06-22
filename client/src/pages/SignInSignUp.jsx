@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 const INPUT_CLS = 'w-full border border-outline-variant rounded-lg px-md py-sm text-body-md text-on-surface bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all'
@@ -28,9 +27,10 @@ export default function SignInSignUp() {
   const [form, setForm] = useState({
     firstName: '', lastName: '', email: '', confirmEmail: '', password: '', confirmPassword: '',
   })
-  const [error, setError] = useState('')
+  const [error, setError]         = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [confirmed, setConfirmed]   = useState(false)
   const { register, login } = useAuth()
-  const navigate = useNavigate()
 
   const isSignUp = tab === 'signup'
 
@@ -39,23 +39,38 @@ export default function SignInSignUp() {
     setError('')
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     setError('')
+    setSubmitting(true)
 
-    if (isSignUp) {
-      if (!form.firstName.trim()) return setError('Please enter your first name.')
-      if (!form.lastName.trim())  return setError('Please enter your last name.')
-      if (form.email !== form.confirmEmail) return setError('Emails do not match.')
-      if (form.password.length < 6) return setError('Password must be at least 6 characters.')
-      if (form.password !== form.confirmPassword) return setError('Passwords do not match.')
-      register({ firstName: form.firstName.trim(), lastName: form.lastName.trim(), email: form.email, password: form.password })
-    } else {
-      if (!form.email || !form.password) return setError('Please fill in all fields.')
-      login({ email: form.email, password: form.password })
+    try {
+      if (isSignUp) {
+        if (!form.firstName.trim()) { setError('Please enter your first name.'); return }
+        if (!form.lastName.trim())  { setError('Please enter your last name.'); return }
+        if (form.email !== form.confirmEmail) { setError('Emails do not match.'); return }
+        if (form.password.length < 6) { setError('Password must be at least 6 characters.'); return }
+        if (form.password !== form.confirmPassword) { setError('Passwords do not match.'); return }
+
+        const { needsConfirmation } = await register({
+          firstName: form.firstName.trim(),
+          lastName:  form.lastName.trim(),
+          email:     form.email,
+          password:  form.password,
+        })
+
+        if (needsConfirmation) setConfirmed(true)
+        // If no confirmation needed, onAuthStateChange fires and App.jsx redirects automatically
+      } else {
+        if (!form.email || !form.password) { setError('Please fill in all fields.'); return }
+        await login({ email: form.email, password: form.password })
+        // onAuthStateChange fires → App.jsx redirects to /home
+      }
+    } catch (err) {
+      setError(err.message ?? 'Something went wrong. Please try again.')
+    } finally {
+      setSubmitting(false)
     }
-
-    navigate('/home')
   }
 
   return (
@@ -74,69 +89,89 @@ export default function SignInSignUp() {
           <p className="text-body-md text-on-surface-variant mt-sm max-w-[280px] mx-auto">Your expert companion for nutritional vitality.</p>
         </div>
 
-        {/* Auth card */}
-        <div className="w-full max-w-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/50 p-lg md:p-8 relative overflow-hidden">
-          {/* Tab toggle */}
-          <div className="flex bg-surface-container-low rounded-lg p-1 mb-xl relative">
-            <div
-              className="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-surface-container-lowest rounded-md shadow-sm transition-transform duration-300 ease-in-out"
-              style={{ transform: isSignUp ? 'translateX(100%)' : 'translateX(0)' }}
-            />
-            <button type="button" onClick={() => { setTab('signin'); setError('') }}
-              className={`flex-1 py-2 text-label-md font-semibold relative z-10 transition-colors duration-300 ${!isSignUp ? 'text-primary' : 'text-on-surface-variant'}`}>
-              Sign In
-            </button>
-            <button type="button" onClick={() => { setTab('signup'); setError('') }}
-              className={`flex-1 py-2 text-label-md font-semibold relative z-10 transition-colors duration-300 ${isSignUp ? 'text-primary' : 'text-on-surface-variant'}`}>
-              Sign Up
-            </button>
-          </div>
-
-          <form onSubmit={handleSubmit} className="flex flex-col gap-md">
-            {isSignUp && (
-              <div className="grid grid-cols-2 gap-md">
-                <Field id="firstName" name="firstName" label="First Name" value={form.firstName} onChange={handleChange} required autoComplete="given-name" />
-                <Field id="lastName"  name="lastName"  label="Last Name"  value={form.lastName}  onChange={handleChange} required autoComplete="family-name" />
-              </div>
-            )}
-
-            <Field id="email" name="email" type="email" label="Email Address" value={form.email} onChange={handleChange} required autoComplete="email" />
-
-            {isSignUp && (
-              <Field id="confirmEmail" name="confirmEmail" type="email" label="Confirm Email" value={form.confirmEmail} onChange={handleChange} required autoComplete="email" />
-            )}
-
-            <Field id="password" name="password" type="password" label="Password" value={form.password} onChange={handleChange} required autoComplete={isSignUp ? 'new-password' : 'current-password'} />
-
-            {isSignUp && (
-              <Field id="confirmPassword" name="confirmPassword" type="password" label="Confirm Password" value={form.confirmPassword} onChange={handleChange} required autoComplete="new-password" />
-            )}
-
-            {!isSignUp && (
-              <div className="flex justify-end -mt-sm">
-                <a href="#" className="text-label-md text-primary hover:underline transition-colors">Forgot Password?</a>
-              </div>
-            )}
-
-            {error && (
-              <p className="text-sm text-error bg-error-container px-3 py-2 rounded-lg">{error}</p>
-            )}
-
+        {/* Email confirmation message */}
+        {confirmed ? (
+          <div className="w-full max-w-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/50 p-lg text-center space-y-md">
+            <span className="material-symbols-outlined text-[48px] text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>mark_email_read</span>
+            <h2 className="font-display font-semibold text-headline-md text-on-surface">Check your email</h2>
+            <p className="text-body-md text-on-surface-variant">
+              We sent a confirmation link to <strong>{form.email}</strong>. Click it to activate your account, then sign in.
+            </p>
             <button
-              type="submit"
-              className="w-full bg-primary text-on-primary text-label-md font-semibold py-3 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-surface-tint transition-all active:scale-[0.98] relative overflow-hidden group mt-sm"
+              onClick={() => { setConfirmed(false); setTab('signin') }}
+              className="text-primary text-label-md font-semibold hover:underline"
             >
-              <span className="relative z-10">{isSignUp ? 'Create Account' : 'Sign In'}</span>
-              <div className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
+              Back to Sign In
             </button>
-          </form>
-
-          <div className="mt-xl flex items-center justify-center space-x-4">
-            <span className="h-px bg-outline-variant w-full" />
-            <span className="text-label-md text-on-surface-variant whitespace-nowrap">Secure Access</span>
-            <span className="h-px bg-outline-variant w-full" />
           </div>
-        </div>
+        ) : (
+          /* Auth card */
+          <div className="w-full max-w-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/50 p-lg md:p-8 relative overflow-hidden">
+            {/* Tab toggle */}
+            <div className="flex bg-surface-container-low rounded-lg p-1 mb-xl relative">
+              <div
+                className="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-surface-container-lowest rounded-md shadow-sm transition-transform duration-300 ease-in-out"
+                style={{ transform: isSignUp ? 'translateX(100%)' : 'translateX(0)' }}
+              />
+              <button type="button" onClick={() => { setTab('signin'); setError('') }}
+                className={`flex-1 py-2 text-label-md font-semibold relative z-10 transition-colors duration-300 ${!isSignUp ? 'text-primary' : 'text-on-surface-variant'}`}>
+                Sign In
+              </button>
+              <button type="button" onClick={() => { setTab('signup'); setError('') }}
+                className={`flex-1 py-2 text-label-md font-semibold relative z-10 transition-colors duration-300 ${isSignUp ? 'text-primary' : 'text-on-surface-variant'}`}>
+                Sign Up
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-md">
+              {isSignUp && (
+                <div className="grid grid-cols-2 gap-md">
+                  <Field id="firstName" name="firstName" label="First Name" value={form.firstName} onChange={handleChange} required autoComplete="given-name" />
+                  <Field id="lastName"  name="lastName"  label="Last Name"  value={form.lastName}  onChange={handleChange} required autoComplete="family-name" />
+                </div>
+              )}
+
+              <Field id="email" name="email" type="email" label="Email Address" value={form.email} onChange={handleChange} required autoComplete="email" />
+
+              {isSignUp && (
+                <Field id="confirmEmail" name="confirmEmail" type="email" label="Confirm Email" value={form.confirmEmail} onChange={handleChange} required autoComplete="email" />
+              )}
+
+              <Field id="password" name="password" type="password" label="Password" value={form.password} onChange={handleChange} required autoComplete={isSignUp ? 'new-password' : 'current-password'} />
+
+              {isSignUp && (
+                <Field id="confirmPassword" name="confirmPassword" type="password" label="Confirm Password" value={form.confirmPassword} onChange={handleChange} required autoComplete="new-password" />
+              )}
+
+              {!isSignUp && (
+                <div className="flex justify-end -mt-sm">
+                  <a href="#" className="text-label-md text-primary hover:underline transition-colors">Forgot Password?</a>
+                </div>
+              )}
+
+              {error && (
+                <p className="text-sm text-error bg-error-container px-3 py-2 rounded-lg">{error}</p>
+              )}
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full bg-primary text-on-primary text-label-md font-semibold py-3 px-6 rounded-lg shadow-sm hover:shadow-md hover:bg-surface-tint transition-all active:scale-[0.98] relative overflow-hidden group mt-sm disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <span className="relative z-10">
+                  {submitting ? 'Please wait…' : isSignUp ? 'Create Account' : 'Sign In'}
+                </span>
+                <div className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
+              </button>
+            </form>
+
+            <div className="mt-xl flex items-center justify-center space-x-4">
+              <span className="h-px bg-outline-variant w-full" />
+              <span className="text-label-md text-on-surface-variant whitespace-nowrap">Secure Access</span>
+              <span className="h-px bg-outline-variant w-full" />
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Footer */}

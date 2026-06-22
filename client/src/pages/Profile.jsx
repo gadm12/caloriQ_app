@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { supabase } from '../lib/supabase'
 
 function Field({ label, type = 'text', value, onChange, autoComplete }) {
   return (
@@ -37,36 +38,52 @@ export default function Profile() {
 
   const [profileSaved, setProfileSaved] = useState(false)
   const [pwSaved,      setPwSaved]      = useState(false)
+  const [profileSaving, setProfileSaving] = useState(false)
+  const [pwSaving,      setPwSaving]      = useState(false)
 
-  function handleProfileSave(e) {
+  async function handleProfileSave(e) {
     e.preventDefault()
-    updateUser({ firstName: firstName.trim(), lastName: lastName.trim(), email })
-    setProfileSaved(true)
-    setTimeout(() => setProfileSaved(false), 2500)
+    setProfileSaving(true)
+    try {
+      const updates = { firstName: firstName.trim(), lastName: lastName.trim() }
+      if (email !== user.email) updates.email = email
+      await updateUser(updates)
+      setProfileSaved(true)
+      setTimeout(() => setProfileSaved(false), 2500)
+    } catch (err) {
+      alert(err.message ?? 'Failed to save profile.')
+    } finally {
+      setProfileSaving(false)
+    }
   }
 
-  function handlePasswordSave(e) {
+  async function handlePasswordSave(e) {
     e.preventDefault()
     setPwError('')
-    if (pwForm.current !== user?.password) {
-      setPwError('Current password is incorrect.')
-      return
+    if (pwForm.next.length < 6) { setPwError('New password must be at least 6 characters.'); return }
+    if (pwForm.next !== pwForm.confirm) { setPwError('Passwords do not match.'); return }
+
+    setPwSaving(true)
+    try {
+      // Re-authenticate to verify the current password before updating
+      const { error: reAuthError } = await supabase.auth.signInWithPassword({
+        email:    user.email,
+        password: pwForm.current,
+      })
+      if (reAuthError) { setPwError('Current password is incorrect.'); return }
+
+      await updateUser({ password: pwForm.next })
+      setPwForm({ current: '', next: '', confirm: '' })
+      setPwSaved(true)
+      setTimeout(() => setPwSaved(false), 2500)
+    } catch (err) {
+      setPwError(err.message ?? 'Failed to update password.')
+    } finally {
+      setPwSaving(false)
     }
-    if (pwForm.next.length < 6) {
-      setPwError('New password must be at least 6 characters.')
-      return
-    }
-    if (pwForm.next !== pwForm.confirm) {
-      setPwError('Passwords do not match.')
-      return
-    }
-    updateUser({ password: pwForm.next })
-    setPwForm({ current: '', next: '', confirm: '' })
-    setPwSaved(true)
-    setTimeout(() => setPwSaved(false), 2500)
   }
 
-  const initials   = getInitials(user)
+  const initials    = getInitials(user)
   const displayName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || user?.email || ''
 
   return (
@@ -104,9 +121,9 @@ export default function Profile() {
         </div>
 
         <div className="flex items-center gap-md">
-          <button type="submit"
-            className="px-lg py-sm bg-primary text-on-primary text-label-md font-semibold rounded-full hover:opacity-90 active:scale-95 transition-all shadow-sm">
-            Save Changes
+          <button type="submit" disabled={profileSaving}
+            className="px-lg py-sm bg-primary text-on-primary text-label-md font-semibold rounded-full hover:opacity-90 active:scale-95 transition-all shadow-sm disabled:opacity-60">
+            {profileSaving ? 'Saving…' : 'Save Changes'}
           </button>
           {profileSaved && (
             <div className="flex items-center gap-xs text-primary">
@@ -144,9 +161,9 @@ export default function Profile() {
         </div>
 
         <div className="flex items-center gap-md">
-          <button type="submit"
-            className="px-lg py-sm bg-primary text-on-primary text-label-md font-semibold rounded-full hover:opacity-90 active:scale-95 transition-all shadow-sm">
-            Update Password
+          <button type="submit" disabled={pwSaving}
+            className="px-lg py-sm bg-primary text-on-primary text-label-md font-semibold rounded-full hover:opacity-90 active:scale-95 transition-all shadow-sm disabled:opacity-60">
+            {pwSaving ? 'Updating…' : 'Update Password'}
           </button>
           {pwSaved && (
             <div className="flex items-center gap-xs text-primary">
