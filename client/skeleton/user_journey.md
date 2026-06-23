@@ -27,3 +27,22 @@ If something goes wrong a page stating "Oops! Something went wrong. We have capt
 Upon a food entry being logged, a daily calorie counter increments to show the user how many calories they have consumed today toward their goal.
 
 User logs out.
+
+This React + vite application using React Router DOM is functioning correctly and I want to preserver the existing UI and user experience
+
+Resources:
+
+1. SQL Schema: @./skeleton/db_schema.sql
+2. Supabase Project URL: https://inkfsrdjdmhbfxqjyvtm.supabase.co/rest/v1/
+3. Supabase Public API Key: sb_publishable_vSyMb6WGrDl4g1nB8Y8LWg_Pxo0dgUn
+4. Resources: logs and users
+
+Requirements:
+
+- Analyze the current application before making any code changes.
+- identify all existing CRUD flows and components that manage data.
+- present an implementation plan before modifying code.
+
+Implementation Requirements:
+
+- Preserver the existing UI.
