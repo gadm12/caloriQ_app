@@ -1,6 +1,8 @@
 client/.env
 supabase/node_modules
 node_modules
+supabase/.env
+
 
 client/.env
 .env

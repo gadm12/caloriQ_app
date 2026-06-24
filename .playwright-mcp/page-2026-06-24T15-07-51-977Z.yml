@@ -1,0 +1,113 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - link "nutrition CaloriQ" [ref=e9] [cursor=pointer]:
+          - /url: /home
+          - generic [ref=e10]: nutrition
+          - generic [ref=e11]: CaloriQ
+        - navigation [ref=e12]:
+          - link "Dashboard" [ref=e13] [cursor=pointer]:
+            - /url: /dashboard
+          - link "Log" [ref=e14] [cursor=pointer]:
+            - /url: /log
+          - link "Add" [ref=e15] [cursor=pointer]:
+            - /url: /log/search
+          - link "Progress" [ref=e16] [cursor=pointer]:
+            - /url: /progress
+          - link "Goals" [ref=e17] [cursor=pointer]:
+            - /url: /goals
+          - link "Contact" [ref=e18] [cursor=pointer]:
+            - /url: /contact
+      - generic [ref=e19]:
+        - button "Switch to dark mode" [ref=e20] [cursor=pointer]:
+          - generic [ref=e21]: dark_mode
+        - button "Go to profile" [ref=e22] [cursor=pointer]: MG
+        - button "Sign out" [ref=e23] [cursor=pointer]:
+          - generic [ref=e24]: logout
+          - generic [ref=e25]: Sign out
+  - generic [ref=e27]:
+    - generic [ref=e28]:
+      - generic [ref=e30]: favorite
+      - heading "Help Fight Hunger" [level=1] [ref=e31]
+      - paragraph [ref=e32]: Your donation goes directly to organizations working to end food insecurity around the world. Every dollar makes a difference.
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - generic [ref=e35]: verified
+          - text: Secure payment
+        - generic [ref=e36]:
+          - generic [ref=e37]: public
+          - text: Global impact
+        - generic [ref=e38]:
+          - generic [ref=e39]: diversity_3
+          - text: Community driven
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - paragraph [ref=e43]: Choose an amount
+        - generic [ref=e44]:
+          - button "$5" [ref=e45] [cursor=pointer]
+          - button "$10" [active] [ref=e46] [cursor=pointer]
+          - button "$25" [ref=e47] [cursor=pointer]
+          - button "$50" [ref=e48] [cursor=pointer]
+        - generic [ref=e49]:
+          - generic [ref=e50]: $
+          - spinbutton [ref=e51]
+      - generic [ref=e52]:
+        - paragraph [ref=e53]: Card details
+        - generic [ref=e56]:
+          - iframe [ref=e57]:
+            - generic [ref=f18e1]:
+              - generic: 0123456789０１２３４５６７８９
+              - textbox [disabled]
+              - generic [ref=f18e2]:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img
+                      - generic:
+                        - img
+                - generic [ref=f18e3]:
+                  - generic [ref=f18e4]:
+                    - generic: Number
+                    - generic [ref=f18e6]:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - img
+                            - generic:
+                              - img
+                      - textbox "Credit or debit card number" [ref=f18e9]:
+                        - /placeholder: Card number
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - textbox:
+                            - /placeholder: MM / YY
+                    - generic:
+                      - generic:
+                        - generic:
+                          - textbox:
+                            - /placeholder: CVC
+              - textbox [disabled]
+              - button
+          - textbox
+          - iframe [ref=e59]:
+            - button "Autofill with Link" [ref=f21e3] [cursor=pointer]:
+              - generic [ref=f21e5]: Autofill
+              - img [ref=f21e6]
+        - paragraph [ref=e60]:
+          - generic [ref=e61]: lock
+          - text: Your payment is secured by Stripe. We never store your card details.
+      - button "favorite Donate $10.00" [ref=e62] [cursor=pointer]:
+        - generic [ref=e63]: favorite
+        - text: Donate $10.00
+      - paragraph [ref=e64]: Powered by Stripe. This is a test environment — no real money is charged.
+  - contentinfo [ref=e66]:
+    - generic [ref=e67]:
+      - generic [ref=e68]: favorite
+      - generic [ref=e69]: Help fight hunger around the world
+    - link "Donate Now" [ref=e70] [cursor=pointer]:
+      - /url: /donate
