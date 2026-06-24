@@ -1,0 +1,27 @@
+- generic [ref=e98]:
+  - main [ref=e99]:
+    - generic [ref=e100]:
+      - generic [ref=e102]: nutrition
+      - heading "CaloriQ" [level=1] [ref=e103]
+      - paragraph [ref=e104]: Your expert companion for nutritional vitality.
+    - generic [ref=e105]:
+      - generic [ref=e106]:
+        - button "Sign In" [ref=e108] [cursor=pointer]
+        - button "Sign Up" [ref=e109] [cursor=pointer]
+      - generic [ref=e110]:
+        - generic [ref=e111]:
+          - generic [ref=e112]: Email Address
+          - textbox "Email Address" [ref=e113]
+        - generic [ref=e114]:
+          - generic [ref=e115]: Password
+          - textbox "Password" [ref=e116]
+        - link "Forgot Password?" [ref=e118] [cursor=pointer]:
+          - /url: "#"
+        - button "Sign In" [ref=e119] [cursor=pointer]: Sign In
+      - generic [ref=e122]: Secure Access
+  - contentinfo [ref=e125]:
+    - generic [ref=e126]:
+      - generic [ref=e127]: volunteer_activism
+      - generic [ref=e128]: Help fight hunger around the world
+    - link "Donate Now" [ref=e129] [cursor=pointer]:
+      - /url: "#"

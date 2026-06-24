@@ -19,26 +19,42 @@ export default function FoodDetailModal({ entry, onClose }) {
     fat:      entry.fat,
   })
   const [showConfirm, setShowConfirm] = useState(false)
+  const [saving,      setSaving]      = useState(false)
+  const [saveError,   setSaveError]   = useState(null)
 
   function handleChange(e) {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  function handleSave(e) {
+  async function handleSave(e) {
     e.preventDefault()
-    updateEntry(entry.id, {
-      ...form,
-      calories: Number(form.calories),
-      protein:  Number(form.protein),
-      carbs:    Number(form.carbs),
-      fat:      Number(form.fat),
-    })
-    onClose()
+    setSaveError(null)
+    setSaving(true)
+    try {
+      await updateEntry(entry.id, {
+        ...form,
+        calories: Number(form.calories),
+        protein:  Number(form.protein),
+        carbs:    Number(form.carbs),
+        fat:      Number(form.fat),
+      })
+      onClose()
+    } catch (err) {
+      setSaveError(err.message ?? 'Failed to save changes')
+      setSaving(false)
+    }
   }
 
-  function handleDelete() {
-    deleteEntry(entry.id)
-    onClose()
+  async function handleDelete() {
+    setSaveError(null)
+    setSaving(true)
+    try {
+      await deleteEntry(entry.id)
+      onClose()
+    } catch (err) {
+      setSaveError(err.message ?? 'Failed to delete entry')
+      setSaving(false)
+    }
   }
 
   return (
@@ -112,21 +128,31 @@ export default function FoodDetailModal({ entry, onClose }) {
                 </div>
               </div>
 
+              {/* Error */}
+              {saveError && (
+                <div className="flex items-center gap-xs p-sm bg-error-container text-on-error-container rounded-lg text-label-md">
+                  <span className="material-symbols-outlined text-[16px]">error</span>
+                  {saveError}
+                </div>
+              )}
+
               {/* Actions */}
               <div className="flex gap-md pt-sm">
                 <button
                   type="button"
+                  disabled={saving}
                   onClick={() => setShowConfirm(true)}
-                  className="flex items-center gap-xs px-md py-2 rounded-lg border border-error/40 text-error text-label-md font-semibold hover:bg-error-container transition-colors"
+                  className="flex items-center gap-xs px-md py-2 rounded-lg border border-error/40 text-error text-label-md font-semibold hover:bg-error-container transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="material-symbols-outlined text-[18px]">delete</span>
                   Delete
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-primary text-on-primary text-label-md font-semibold py-2 rounded-lg shadow-sm hover:bg-surface-tint transition-colors"
+                  disabled={saving}
+                  className="flex-1 bg-primary text-on-primary text-label-md font-semibold py-2 rounded-lg shadow-sm hover:bg-surface-tint transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Save Changes
+                  {saving ? 'Saving…' : 'Save Changes'}
                 </button>
               </div>
             </form>

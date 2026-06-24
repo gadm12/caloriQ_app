@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
 import { useAuth } from './AuthContext'
+import { getTodayLogs, getTodayLogId, getWeekLogData } from '../services/mealLogsService'
+import { getEntriesByLogIds, addFoodEntry, updateFoodEntry, deleteFoodEntry } from '../services/foodEntriesService'
+import { updateGoals } from '../services/profilesService'
 
 const AppContext = createContext(null)
 
@@ -30,33 +32,14 @@ function dbToEntry(row) {
   }
 }
 
-async function getTodayLogId(userId) {
-  const today = new Date().toISOString().split('T')[0]
-  const { data: existing } = await supabase
-    .from('meal_logs')
-    .select('id')
-    .eq('user_id', userId)
-    .eq('log_date', today)
-    .maybeSingle()
-
-  if (existing) return existing.id
-
-  const { data: newLog } = await supabase
-    .from('meal_logs')
-    .insert({ user_id: userId, log_date: today })
-    .select('id')
-    .single()
-
-  return newLog.id
-}
-
 export function AppProvider({ children }) {
   const { user } = useAuth()
-  const [entries, setEntries] = useState([])
-  const [goal, setGoal]       = useState({ calories: 2200, protein: 150, carbs: 250, fat: 70 })
-  const [loading, setLoading] = useState(false)
+  const [entries,  setEntries]  = useState([])
+  const [goal,     setGoal]     = useState({ calories: 2200, protein: 150, carbs: 250, fat: 70 })
+  const [weekData, setWeekData] = useState([])
+  const [loading,  setLoading]  = useState(false)
+  const [error,    setError]    = useState(null)
 
-  // Sync goal from user profile
   useEffect(() => {
     if (!user) return
     setGoal({
@@ -67,40 +50,41 @@ export function AppProvider({ children }) {
     })
   }, [user?.id])
 
-  // Load today's entries
   useEffect(() => {
-    if (!user) { setEntries([]); return }
+    if (!user) { setEntries([]); setWeekData([]); return }
 
     async function load() {
       setLoading(true)
-      const today = new Date().toISOString().split('T')[0]
+      setError(null)
+      try {
+        const [logs, week] = await Promise.all([
+          getTodayLogs(user.id),
+          getWeekLogData(user.id),
+        ])
 
-      const { data: logs } = await supabase
-        .from('meal_logs')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('log_date', today)
+        if (logs.length) {
+          const rows = await getEntriesByLogIds(logs.map(l => l.id))
+          setEntries(rows.map(dbToEntry))
+        } else {
+          setEntries([])
+        }
 
-      if (!logs?.length) { setEntries([]); setLoading(false); return }
-
-      const logIds = logs.map(l => l.id)
-      const { data } = await supabase
-        .from('food_entries')
-        .select('*')
-        .in('log_id', logIds)
-
-      setEntries((data ?? []).map(dbToEntry))
-      setLoading(false)
+        setWeekData(week)
+      } catch (err) {
+        setError(err.message ?? 'Failed to load data')
+      } finally {
+        setLoading(false)
+      }
     }
 
     load()
   }, [user?.id])
 
   async function addEntry(entry) {
-    const logId = await getTodayLogId(user.id)
-    const { data } = await supabase
-      .from('food_entries')
-      .insert({
+    setError(null)
+    try {
+      const logId = await getTodayLogId(user.id)
+      const row = await addFoodEntry({
         log_id:       logId,
         user_id:      user.id,
         meal_type:    MEAL_TYPE_TO_DB[entry.category] ?? entry.category.toLowerCase(),
@@ -111,13 +95,28 @@ export function AppProvider({ children }) {
         fat:          entry.fat      || null,
         serving_size: parseFloat(entry.serving) || 100,
       })
-      .select()
-      .single()
-
-    if (data) setEntries(prev => [...prev, dbToEntry(data)])
+      if (row) {
+        setEntries(prev => [...prev, dbToEntry(row)])
+        setWeekData(prev => prev.map(d => {
+          const today = new Date().toISOString().split('T')[0]
+          if (d.date !== today) return d
+          return {
+            ...d,
+            calories: d.calories + Number(entry.calories ?? 0),
+            protein:  d.protein  + Number(entry.protein  ?? 0),
+            carbs:    d.carbs    + Number(entry.carbs    ?? 0),
+            fat:      d.fat      + Number(entry.fat      ?? 0),
+          }
+        }))
+      }
+    } catch (err) {
+      setError(err.message ?? 'Failed to add entry')
+      throw err
+    }
   }
 
   async function updateEntry(id, updates) {
+    setError(null)
     const dbUpdates = {}
     if (updates.name     !== undefined) dbUpdates.food_name    = updates.name
     if (updates.category !== undefined) dbUpdates.meal_type    = MEAL_TYPE_TO_DB[updates.category] ?? updates.category.toLowerCase()
@@ -127,24 +126,41 @@ export function AppProvider({ children }) {
     if (updates.fat      !== undefined) dbUpdates.fat          = updates.fat
     if (updates.serving  !== undefined) dbUpdates.serving_size = parseFloat(updates.serving) || 100
 
-    await supabase.from('food_entries').update(dbUpdates).eq('id', id)
-    setEntries(prev => prev.map(e => e.id === id ? { ...e, ...updates } : e))
+    try {
+      await updateFoodEntry(id, dbUpdates)
+      setEntries(prev => prev.map(e => e.id === id ? { ...e, ...updates } : e))
+    } catch (err) {
+      setError(err.message ?? 'Failed to update entry')
+      throw err
+    }
   }
 
   async function deleteEntry(id) {
-    await supabase.from('food_entries').delete().eq('id', id)
-    setEntries(prev => prev.filter(e => e.id !== id))
+    setError(null)
+    try {
+      await deleteFoodEntry(id)
+      setEntries(prev => prev.filter(e => e.id !== id))
+    } catch (err) {
+      setError(err.message ?? 'Failed to delete entry')
+      throw err
+    }
   }
 
   async function updateGoal(updates) {
+    setError(null)
     const dbUpdates = {}
     if (updates.calories !== undefined) dbUpdates.calorie_goal = updates.calories
     if (updates.protein  !== undefined) dbUpdates.protein_goal = updates.protein
     if (updates.carbs    !== undefined) dbUpdates.carbs_goal   = updates.carbs
     if (updates.fat      !== undefined) dbUpdates.fat_goal     = updates.fat
 
-    await supabase.from('profiles').update(dbUpdates).eq('id', user.id)
-    setGoal(prev => ({ ...prev, ...updates }))
+    try {
+      await updateGoals(user.id, dbUpdates)
+      setGoal(prev => ({ ...prev, ...updates }))
+    } catch (err) {
+      setError(err.message ?? 'Failed to save goals')
+      throw err
+    }
   }
 
   const todayTotals = entries.reduce(
@@ -158,7 +174,7 @@ export function AppProvider({ children }) {
   )
 
   return (
-    <AppContext.Provider value={{ entries, goal, todayTotals, loading, addEntry, updateEntry, deleteEntry, updateGoal }}>
+    <AppContext.Provider value={{ entries, goal, todayTotals, weekData, loading, error, addEntry, updateEntry, deleteEntry, updateGoal }}>
       {children}
     </AppContext.Provider>
   )

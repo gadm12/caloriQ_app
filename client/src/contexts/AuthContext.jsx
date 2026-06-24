@@ -56,16 +56,14 @@ export function AuthProvider({ children }) {
 
   // Returns { needsConfirmation: true } if email confirmation is required
   async function register({ firstName, lastName, email, password }) {
-    const { data, error } = await supabase.auth.signUp({ email, password })
+    const fullName = `${firstName} ${lastName}`.trim()
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { name: fullName } },
+    })
     if (error) throw error
-
-    if (data.user) {
-      await supabase.from('profiles').insert({
-        id:   data.user.id,
-        name: `${firstName} ${lastName}`.trim(),
-      })
-    }
-
+    // Profile row is created automatically by the on_auth_user_created trigger.
     return { needsConfirmation: !data.session }
   }
 

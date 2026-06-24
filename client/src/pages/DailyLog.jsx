@@ -131,12 +131,11 @@ function MealCard({ meal, entries, onEdit, onDeleteRequest, onAdd }) {
 }
 
 export default function DailyLog() {
-  const { entries, todayTotals, goal } = useApp()
+  const { entries, todayTotals, goal, error, deleteEntry: doDelete } = useApp()
   const navigate = useNavigate()
 
   const [editEntry, setEditEntry]       = useState(null)
   const [deleteEntry, setDeleteEntry]   = useState(null)
-  const { deleteEntry: doDelete }       = useApp()
 
   const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
@@ -146,13 +145,22 @@ export default function DailyLog() {
     navigate(`/log/search?meal=${encodeURIComponent(meal)}`)
   }
 
-  function handleDeleteConfirm() {
-    doDelete(deleteEntry.id)
-    setDeleteEntry(null)
+  async function handleDeleteConfirm() {
+    try {
+      await doDelete(deleteEntry.id)
+    } finally {
+      setDeleteEntry(null)
+    }
   }
 
   return (
     <>
+      {error && (
+        <div className="flex items-center gap-sm p-md mb-md bg-error-container text-on-error-container rounded-lg text-body-md">
+          <span className="material-symbols-outlined text-[18px]">error</span>
+          {error}
+        </div>
+      )}
       {/* Modals */}
       {editEntry && (
         <FoodDetailModal entry={editEntry} onClose={() => setEditEntry(null)} />

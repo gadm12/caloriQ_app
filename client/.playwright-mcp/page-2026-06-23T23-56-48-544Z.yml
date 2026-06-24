@@ -1,0 +1,38 @@
+- generic [ref=e3]:
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]: nutrition
+      - heading "CaloriQ" [level=1] [ref=e8]
+      - paragraph [ref=e9]: Your expert companion for nutritional vitality.
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - button "Sign In" [ref=e13] [cursor=pointer]
+        - button "Sign Up" [ref=e14] [cursor=pointer]
+      - generic [ref=e15]:
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]: First Name
+            - textbox "First Name" [ref=e38]: Test
+          - generic [ref=e39]:
+            - generic [ref=e40]: Last Name
+            - textbox "Last Name" [ref=e41]: User
+        - generic [ref=e16]:
+          - generic [ref=e17]: Email Address
+          - textbox "Email Address" [ref=e18]: testuser.caloriq@mailinator.com
+        - generic [ref=e42]:
+          - generic [ref=e43]: Confirm Email
+          - textbox "Confirm Email" [ref=e44]: testuser.caloriq@mailinator.com
+        - generic [ref=e19]:
+          - generic [ref=e20]: Password
+          - textbox "Password" [ref=e21]: TestPass123!
+        - generic [ref=e45]:
+          - generic [ref=e46]: Confirm Password
+          - textbox "Confirm Password" [ref=e47]: TestPass123!
+        - button "Create Account" [ref=e48] [cursor=pointer]: Create Account
+      - generic [ref=e27]: Secure Access
+  - contentinfo [ref=e30]:
+    - generic [ref=e31]:
+      - generic [ref=e32]: volunteer_activism
+      - generic [ref=e33]: Help fight hunger around the world
+    - link "Donate Now" [ref=e34] [cursor=pointer]:
+      - /url: "#"

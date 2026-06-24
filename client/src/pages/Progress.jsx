@@ -18,13 +18,6 @@ function fmt(date) {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
-function isToday(date) {
-  const t = new Date()
-  return date.getFullYear() === t.getFullYear() &&
-    date.getMonth() === t.getMonth() &&
-    date.getDate() === t.getDate()
-}
-
 // Mock weekly data (used when preview toggle is on)
 const MOCK_WEEK = [2050, 1980, 2680, 2300, 1850, 1600, 0]
 
@@ -91,17 +84,20 @@ function MacroTile({ icon, label, value, borderColor, iconColor }) {
 
 // ─── Progress page ────────────────────────────────────────────────────────────
 export default function Progress() {
-  const { todayTotals, goal } = useApp()
+  const { goal, weekData } = useApp()
   const [useMock, setUseMock] = useState(false)
 
   const today = new Date()
   const weekDates = getWeekDates(today)
-  const todayIdx = weekDates.findIndex(d => isToday(d))
 
-  // Build per-day calorie data: real today, zeroes for others (or mock)
-  const dayData = useMock
-    ? MOCK_WEEK
-    : weekDates.map((d, i) => (i === todayIdx ? todayTotals.calories : 0))
+  // Build per-day calorie data from real weekData, aligned to Mon–Sun
+  const realDayData = weekDates.map(d => {
+    const key = d.toISOString().split('T')[0]
+    const found = weekData.find(w => w.date === key)
+    return found ? Math.round(found.calories) : 0
+  })
+
+  const dayData = useMock ? MOCK_WEEK : realDayData
 
   const daysLogged = dayData.filter(c => c > 0).length
   const totalLogged = dayData.reduce((s, c) => s + c, 0)
@@ -116,16 +112,18 @@ export default function Progress() {
     daysLogged <= 6  ? 'Goal met most of the week. Great job!' :
     'Perfect week — every day logged!'
 
-  // Weekly macro averages (based on today only for real data; mock for demo)
-  const macroAvg = useMock
-    ? { protein: 124, carbs: 240, fat: 65 }
-    : daysLogged > 0
-      ? {
-          protein: Math.round(todayTotals.protein / daysLogged),
-          carbs: Math.round(todayTotals.carbs / daysLogged),
-          fat: Math.round(todayTotals.fat / daysLogged),
-        }
-      : { protein: 0, carbs: 0, fat: 0 }
+  // Weekly macro averages from real weekData
+  const realMacroAvg = (() => {
+    const daysWithData = weekData.filter(d => d.calories > 0)
+    if (!daysWithData.length) return { protein: 0, carbs: 0, fat: 0 }
+    return {
+      protein: Math.round(daysWithData.reduce((s, d) => s + d.protein, 0) / daysWithData.length),
+      carbs:   Math.round(daysWithData.reduce((s, d) => s + d.carbs,   0) / daysWithData.length),
+      fat:     Math.round(daysWithData.reduce((s, d) => s + d.fat,     0) / daysWithData.length),
+    }
+  })()
+
+  const macroAvg = useMock ? { protein: 124, carbs: 240, fat: 65 } : realMacroAvg
 
   const dateRange = `${fmt(weekDates[0])} – ${fmt(weekDates[6])}`
 

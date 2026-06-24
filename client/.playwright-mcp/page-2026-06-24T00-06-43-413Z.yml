@@ -1,0 +1,75 @@
+- generic [ref=e49]:
+  - banner [ref=e50]:
+    - generic [ref=e51]:
+      - generic [ref=e52]:
+        - link "nutrition CaloriQ" [ref=e53] [cursor=pointer]:
+          - /url: /home
+          - generic [ref=e54]: nutrition
+          - generic [ref=e55]: CaloriQ
+        - navigation [ref=e56]:
+          - link "Dashboard" [ref=e57] [cursor=pointer]:
+            - /url: /dashboard
+          - link "Log" [ref=e58] [cursor=pointer]:
+            - /url: /log
+          - link "Add" [ref=e59] [cursor=pointer]:
+            - /url: /log/search
+          - link "Progress" [ref=e60] [cursor=pointer]:
+            - /url: /progress
+          - link "Goals" [ref=e61] [cursor=pointer]:
+            - /url: /goals
+          - link "Contact" [ref=e62] [cursor=pointer]:
+            - /url: /contact
+      - generic [ref=e63]:
+        - button "Switch to dark mode" [ref=e64] [cursor=pointer]:
+          - generic [ref=e65]: dark_mode
+        - button "Go to profile" [ref=e66] [cursor=pointer]: JD
+        - button "Sign out" [ref=e67] [cursor=pointer]:
+          - generic [ref=e68]: logout
+          - generic [ref=e69]: Sign out
+  - generic [ref=e71]:
+    - generic [ref=e72]:
+      - generic [ref=e74]: nutrition
+      - heading "Welcome 👋" [level=1] [ref=e75]
+      - paragraph [ref=e76]: CaloriQ is your personal nutrition companion — designed to make calorie and macro tracking clear, fast, and sustainable.
+    - generic [ref=e77]:
+      - heading "What CaloriQ does" [level=2] [ref=e78]
+      - paragraph [ref=e79]: "Most nutrition trackers try to do everything — meal plans, recipes, social feeds, premium tiers. CaloriQ does one thing well: it helps you understand what you eat. Log your meals, watch your numbers, and build an honest picture of your daily nutrition without friction or noise."
+      - paragraph [ref=e80]: Every food entry captures the details that matter — name, meal category, serving size, calories, and the three macros. A live counter updates throughout your day so you always know where you stand. When the week is done, the Progress page shows you seven days of data in a single view.
+      - paragraph [ref=e81]: Your data lives entirely in your browser session — no account servers, no sync, no data collection. Refresh the page and start fresh. CaloriQ is a tool, not a platform.
+    - generic [ref=e82]:
+      - heading "Where to start" [level=2] [ref=e83]
+      - generic [ref=e84]:
+        - link "menu_book Daily Log Record every meal — Breakfast, Lunch, Dinner, and Snacks — with precise nutrition data. Edit or remove entries at any time." [ref=e85] [cursor=pointer]:
+          - /url: /log
+          - generic [ref=e87]: menu_book
+          - generic [ref=e88]:
+            - heading "Daily Log" [level=3] [ref=e89]
+            - paragraph [ref=e90]: Record every meal — Breakfast, Lunch, Dinner, and Snacks — with precise nutrition data. Edit or remove entries at any time.
+        - link "dashboard Dashboard See your day at a glance. A live calorie progress bar and macro breakdown tell you exactly where you stand." [ref=e91] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e93]: dashboard
+          - generic [ref=e94]:
+            - heading "Dashboard" [level=3] [ref=e95]
+            - paragraph [ref=e96]: See your day at a glance. A live calorie progress bar and macro breakdown tell you exactly where you stand.
+        - link "insights Weekly Progress Seven-day calorie trends, consistency scores, and average macro breakdowns keep you moving in the right direction." [ref=e97] [cursor=pointer]:
+          - /url: /progress
+          - generic [ref=e99]: insights
+          - generic [ref=e100]:
+            - heading "Weekly Progress" [level=3] [ref=e101]
+            - paragraph [ref=e102]: Seven-day calorie trends, consistency scores, and average macro breakdowns keep you moving in the right direction.
+        - link "track_changes Goal Settings Set a daily calorie target and optional macro goals for protein, carbs, and fat. Changes take effect everywhere instantly." [ref=e103] [cursor=pointer]:
+          - /url: /goals
+          - generic [ref=e105]: track_changes
+          - generic [ref=e106]:
+            - heading "Goal Settings" [level=3] [ref=e107]
+            - paragraph [ref=e108]: Set a daily calorie target and optional macro goals for protein, carbs, and fat. Changes take effect everywhere instantly.
+    - link "restaurant Log today's first meal" [ref=e110] [cursor=pointer]:
+      - /url: /log
+      - generic [ref=e111]: restaurant
+      - text: Log today's first meal
+  - contentinfo [ref=e113]:
+    - generic [ref=e114]:
+      - generic [ref=e115]: favorite
+      - generic [ref=e116]: Help fight hunger around the world
+    - link "Donate Now" [ref=e117] [cursor=pointer]:
+      - /url: "#"

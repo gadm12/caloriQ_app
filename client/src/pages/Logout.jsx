@@ -1,17 +1,22 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Logout() {
-  const { logout } = useAuth()
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
 
+  // If an authenticated user lands here directly, log them out
+  useEffect(() => {
+    if (user) logout()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   function handleLogBackIn() {
-    logout()
     navigate('/')
   }
 
   function handleReturnHome() {
-    navigate('/home')
+    navigate('/')
   }
 
   return (
@@ -41,7 +46,7 @@ export default function Logout() {
               onClick={handleReturnHome}
               className="w-full bg-transparent border-[1.5px] border-primary text-primary text-label-md font-semibold py-3 rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-200"
             >
-              Return Home
+              Back to Sign In
             </button>
           </div>
         </div>

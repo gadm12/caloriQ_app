@@ -32,17 +32,27 @@ export default function GoalSettings() {
     carbs: goal.carbs,
     fat: goal.fat,
   })
-  const [saved, setSaved] = useState(false)
+  const [saved,     setSaved]     = useState(false)
+  const [saveError, setSaveError] = useState(null)
+  const [saving,    setSaving]    = useState(false)
 
   function set(field) {
     return val => setForm(prev => ({ ...prev, [field]: val }))
   }
 
-  function handleSave(e) {
+  async function handleSave(e) {
     e.preventDefault()
-    updateGoal(form)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2500)
+    setSaveError(null)
+    setSaving(true)
+    try {
+      await updateGoal(form)
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2500)
+    } catch (err) {
+      setSaveError(err.message ?? 'Failed to save goals')
+    } finally {
+      setSaving(false)
+    }
   }
 
   // Estimated calories from macros
@@ -118,12 +128,13 @@ export default function GoalSettings() {
         </div>
 
         {/* Save */}
-        <div className="flex items-center gap-md">
+        <div className="flex items-center gap-md flex-wrap">
           <button
             type="submit"
-            className="px-lg py-sm bg-primary text-on-primary text-label-md font-semibold rounded-full hover:opacity-90 active:scale-95 transition-all shadow-sm"
+            disabled={saving}
+            className="px-lg py-sm bg-primary text-on-primary text-label-md font-semibold rounded-full hover:opacity-90 active:scale-95 transition-all shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Save Changes
+            {saving ? 'Saving…' : 'Save Changes'}
           </button>
 
           {saved && (
@@ -132,6 +143,13 @@ export default function GoalSettings() {
                 check_circle
               </span>
               <span className="text-label-md font-semibold">Saved!</span>
+            </div>
+          )}
+
+          {saveError && (
+            <div className="flex items-center gap-xs text-error">
+              <span className="material-symbols-outlined text-[18px]">error</span>
+              <span className="text-label-md">{saveError}</span>
             </div>
           )}
         </div>

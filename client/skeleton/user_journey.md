@@ -28,21 +28,47 @@ Upon a food entry being logged, a daily calorie counter increments to show the u
 
 User logs out.
 
+
 This React + vite application using React Router DOM is functioning correctly and I want to preserver the existing UI and user experience
 
 Resources:
 
 1. SQL Schema: @./skeleton/db_schema.sql
-2. Supabase Project URL: https://inkfsrdjdmhbfxqjyvtm.supabase.co/rest/v1/
-3. Supabase Public API Key: sb_publishable_vSyMb6WGrDl4g1nB8Y8LWg_Pxo0dgUn
-4. Resources: logs and users
+2. Supabase Project URL: see .env file (VITE_SUPABASE_URL)
+3. Supabase Public API Key: see .env file (VITE_SUPABASE_ANON_KEY)
+4. Resources: tables
+5. application user journey: @./skeleton/user_journey.md
 
 Requirements:
 
 - Analyze the current application before making any code changes.
 - identify all existing CRUD flows and components that manage data.
 - present an implementation plan before modifying code.
+- Use axios for all Open Food Facts API calls as well, not just Supabase
 
 Implementation Requirements:
 
 - Preserver the existing UI.
+- Replace all all mock/local CRUD operations with Supabase API interactions.
+- Use axios for all API service layer.
+- Create a dedicated ApI service layer
+- Components should never directly call axios
+- Store API configuration in environment variables.
+- Implement loading, error, and success states for all CRUD actions
+- Analyze the SQL schema and correctly implement any relationships between tables
+- Do not implement authentication at this time
+- Do not introduce unnecessary architectural changes or redesign existing components
+
+Deliverables:
+
+1. Analysis of current architecture
+2. Proposed implementation plan
+3. Code changes
+4. Summary of modified files
+5. Any assumptions made during implementation
+
+Before writing code, tell me if you identify any ambiguities, missing schema information or architectural concerns.
+
+while you are adding functionality to the application, I want you to utilize the playwright MCP to walk through each feature as if you were the user and ensure the API communication and feature itself are working.
+
+do you have any additional questions?
