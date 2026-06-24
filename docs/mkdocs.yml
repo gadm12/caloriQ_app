@@ -1,17 +1,18 @@
 site_name: CaloriQ
 site_description: Technical documentation for CaloriQ — a free nutrition and calorie tracking SPA
-site_author: Mohamed Gadm
+site_author: Mohamed Gad
 
 nav:
   - Documentation:
-    - Home: index.md
-    - Tech Stack: tech-stack.md
-    - Database: database.md
-    - API Integration: api.md
-    - Features: features.md
-    - Authentication: authentication.md
-    - Stripe Donations: stripe.md
-    - Setup: setup.md
+      - Home: index.md
+      - For Instructors: instructor.md
+      - Tech Stack: tech-stack.md
+      - Database: database.md
+      - API Integration: api.md
+      - Features: features.md
+      - Authentication: authentication.md
+      - Stripe Donations: stripe.md
+      - Setup: setup.md
 
 theme:
   name: material
