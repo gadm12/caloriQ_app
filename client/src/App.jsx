@@ -13,6 +13,7 @@ import GoalSettings from './pages/GoalSettings'
 import Profile from './pages/Profile'
 import ContactUs from './pages/ContactUs'
 import Donate from './pages/Donate'
+import DocsPage from './pages/DocsPage'
 import ErrorPage from './pages/ErrorPage'
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/profile"    element={<Profile />} />
         <Route path="/contact"    element={<ContactUs />} />
         <Route path="/donate"     element={<Donate />} />
+        <Route path="/docs"       element={<DocsPage />} />
       </Route>
 
       {/* Error / 404 */}

@@ -25,6 +25,7 @@ const DESKTOP_NAV = [
   { to: '/progress',  label: 'Progress' },
   { to: '/goals',     label: 'Goals' },
   { to: '/contact',   label: 'Contact' },
+  { to: '/docs',      label: 'Docs' },
 ]
 
 export default function Layout() {
