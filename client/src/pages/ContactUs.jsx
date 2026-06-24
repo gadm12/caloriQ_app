@@ -10,16 +10,16 @@ const CONTACTS = [
   {
     icon: 'code',
     label: 'GitHub',
-    value: 'github.com/gadm5',
-    href: 'https://github.com/gadm5',
+    value: 'github.com/gadm12',
+    href: 'https://github.com/gadm12',
     description: 'Report bugs or contribute to the project.',
     cta: 'View GitHub',
   },
   {
     icon: 'work',
     label: 'LinkedIn',
-    value: 'linkedin.com/in/gadm5',
-    href: 'https://linkedin.com/in/gadm5',
+    value: 'linkedin.com/in/mohamed-gad-67108921a',
+    href: 'https://www.linkedin.com/in/mohamed-gad-67108921a/',
     description: 'Connect with the developer on LinkedIn.',
     cta: 'Connect',
   },
@@ -72,31 +72,6 @@ export default function ContactUs() {
             </div>
           </a>
         ))}
-      </section>
-
-      {/* Donate nudge */}
-      <section
-        className="rounded-xl border border-outline-variant/30 p-lg flex flex-col sm:flex-row items-center justify-between gap-md"
-        style={{ background: 'rgba(255,173,58,0.08)', borderColor: 'rgba(255,173,58,0.3)' }}
-      >
-        <div className="flex items-center gap-md">
-          <span
-            className="material-symbols-outlined text-tertiary-container text-[32px]"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            favorite
-          </span>
-          <div>
-            <h3 className="font-display font-semibold text-headline-md text-on-surface">Support the mission</h3>
-            <p className="text-body-md text-on-surface-variant mt-xs">Help us keep CaloriQ free for everyone.</p>
-          </div>
-        </div>
-        <a
-          href="#"
-          className="px-lg py-sm bg-tertiary-container text-on-tertiary-container text-label-md font-semibold rounded-full hover:opacity-90 active:scale-95 transition-all shadow-sm flex-shrink-0"
-        >
-          Donate Now
-        </a>
       </section>
 
     </div>
