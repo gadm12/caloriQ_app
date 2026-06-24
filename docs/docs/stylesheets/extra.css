@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+/* Override Material primary color to CaloriQ teal */
+:root,
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #00BFA5;
+  --md-primary-fg-color--light: #1de9b6;
+  --md-primary-fg-color--dark: #00897b;
+  --md-accent-fg-color: #00BFA5;
+
+  /* Background tones — match CaloriQ dark surface palette */
+  --md-default-bg-color: #111827;
+  --md-default-fg-color: #e5e7eb;
+  --md-code-bg-color: #1f2937;
+  --md-code-fg-color: #d1d5db;
+
+  /* Header */
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: rgba(255,255,255,0.7);
+}
+
+/* Typography — mirror app fonts */
+body,
+.md-typeset {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.md-typeset h1 {
+  font-weight: 800;
+  color: #00BFA5;
+}
+
+/* Nav logo sizing */
+.md-header__button.md-logo img {
+  height: 36px;
+  width: auto;
+  border-radius: 6px;
+}
+
+/* Header background — dark surface to match CaloriQ layout */
+.md-header {
+  background-color: #1f2937;
+  box-shadow: 0 1px 0 rgba(0,191,165,0.2);
+}
+
+.md-tabs {
+  background-color: #1f2937;
+}
+
+/* Sidebar nav — teal active indicators */
+.md-nav__link--active,
+.md-nav__link:hover {
+  color: #00BFA5 !important;
+}
+
+.md-nav__link--active {
+  font-weight: 600;
+}
+
+/* Table styling */
+.md-typeset table:not([class]) {
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: rgba(0,191,165,0.15);
+  color: #00BFA5;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+}
+
+/* Code blocks */
+.md-typeset pre > code {
+  border-radius: 8px;
+}
+
+.md-typeset code {
+  color: #1de9b6;
+  background-color: rgba(0,191,165,0.1);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+/* Search bar */
+.md-search__input {
+  border-radius: 8px;
+}
+
+/* Footer */
+.md-footer {
+  background-color: #1f2937;
+}
+
+/* Admonitions / blockquotes */
+.md-typeset blockquote {
+  border-left: 3px solid #00BFA5;
+  background-color: rgba(0,191,165,0.05);
+  border-radius: 0 6px 6px 0;
+  padding: 0.75em 1em;
+}

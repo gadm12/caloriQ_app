@@ -1,0 +1,115 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: http://localhost:8000/#caloriq
+  - banner [ref=e3]:
+    - navigation "Header" [ref=e4]:
+      - link "CaloriQ" [ref=e5] [cursor=pointer]:
+        - /url: http://localhost:8000/
+        - img "logo" [ref=e6]
+      - generic [ref=e8]:
+        - generic [ref=e10]: CaloriQ
+        - generic:
+          - generic: Home
+      - dialog [ref=e11]:
+        - search [ref=e12]:
+          - generic [ref=e13]:
+            - textbox "Search" [ref=e14]
+            - generic:
+              - img
+            - navigation "Search":
+              - button "Clear":
+                - img
+          - generic [ref=e16]: Initializing search
+  - generic [ref=e17]:
+    - main [ref=e18]:
+      - generic [ref=e19]:
+        - navigation "Navigation" [ref=e23]:
+          - generic [ref=e24]: CaloriQ
+          - list [ref=e25]:
+            - listitem [ref=e26]:
+              - link "Home" [ref=e27] [cursor=pointer]:
+                - /url: http://localhost:8000/
+                - generic [ref=e28]: Home
+            - listitem [ref=e29]:
+              - link "Tech Stack" [ref=e30] [cursor=pointer]:
+                - /url: http://localhost:8000/tech-stack/
+                - generic [ref=e31]: Tech Stack
+            - listitem [ref=e32]:
+              - link "Database" [ref=e33] [cursor=pointer]:
+                - /url: http://localhost:8000/database/
+                - generic [ref=e34]: Database
+            - listitem [ref=e35]:
+              - link "API Integration" [ref=e36] [cursor=pointer]:
+                - /url: http://localhost:8000/api/
+                - generic [ref=e37]: API Integration
+            - listitem [ref=e38]:
+              - link "Features" [ref=e39] [cursor=pointer]:
+                - /url: http://localhost:8000/features/
+                - generic [ref=e40]: Features
+            - listitem [ref=e41]:
+              - link "Authentication" [ref=e42] [cursor=pointer]:
+                - /url: http://localhost:8000/authentication/
+                - generic [ref=e43]: Authentication
+            - listitem [ref=e44]:
+              - link "Stripe Donations" [ref=e45] [cursor=pointer]:
+                - /url: http://localhost:8000/stripe/
+                - generic [ref=e46]: Stripe Donations
+            - listitem [ref=e47]:
+              - link "Setup" [ref=e48] [cursor=pointer]:
+                - /url: http://localhost:8000/setup/
+                - generic [ref=e49]: Setup
+        - navigation "Table of contents" [ref=e53]:
+          - generic [ref=e54]: Table of contents
+          - list [ref=e55]:
+            - listitem [ref=e56]:
+              - link "What is CaloriQ?" [ref=e57] [cursor=pointer]:
+                - /url: http://localhost:8000/#what-is-caloriq
+                - generic [ref=e58]: What is CaloriQ?
+            - listitem [ref=e59]:
+              - link "Why CaloriQ?" [ref=e60] [cursor=pointer]:
+                - /url: http://localhost:8000/#why-caloriq
+                - generic [ref=e61]: Why CaloriQ?
+            - listitem [ref=e62]:
+              - link "Live App" [ref=e63] [cursor=pointer]:
+                - /url: http://localhost:8000/#live-app
+                - generic [ref=e64]: Live App
+            - listitem [ref=e65]:
+              - link "Repository" [ref=e66] [cursor=pointer]:
+                - /url: http://localhost:8000/#repository
+                - generic [ref=e67]: Repository
+        - article [ref=e69]:
+          - heading "CaloriQ" [level=1] [ref=e70]
+          - paragraph [ref=e71]:
+            - strong [ref=e72]: CaloriQ
+            - text: is a free, full-stack single-page application for tracking daily nutrition and calories — built as a course project at Code Platoon.
+          - separator [ref=e73]
+          - heading "What is CaloriQ?" [level=2] [ref=e74]
+          - paragraph [ref=e75]: "CaloriQ tackles one of the most common barriers to healthy eating: the lack of a simple, free tool to track daily nutrition. Most calorie tracking apps hide essential features — macro breakdowns, meal history, and goal tracking — behind expensive subscriptions."
+          - paragraph [ref=e76]: "CaloriQ provides a focused nutrition tracking experience where users can:"
+          - list [ref=e77]:
+            - listitem [ref=e78]: Search for foods using the Open Food Facts API
+            - listitem [ref=e79]: Log meals across Breakfast, Lunch, Dinner, and Snacks
+            - listitem [ref=e80]: Track calories and macronutrients (protein, carbs, fat)
+            - listitem [ref=e81]: Set and monitor daily calorie goals
+            - listitem [ref=e82]: Visualize weekly nutrition trends
+            - listitem [ref=e83]: Support the project via a one-time Stripe donation
+          - separator [ref=e84]
+          - heading "Why CaloriQ?" [level=2] [ref=e85]
+          - paragraph [ref=e86]: The fitness app market is dominated by subscription-gated products. Free tiers on apps like MyFitnessPal are intentionally limited. CaloriQ's core belief is that basic, personal nutrition data shouldn't cost a monthly fee to access.
+          - separator [ref=e87]
+          - heading "Live App" [level=2] [ref=e88]
+          - blockquote [ref=e89]:
+            - paragraph [ref=e90]: Coming soon — deployed on Vercel
+          - heading "Repository" [level=2] [ref=e91]
+          - blockquote [ref=e92]:
+            - paragraph [ref=e93]:
+              - link "github.com/gadm12/caloriQ_app" [ref=e94] [cursor=pointer]:
+                - /url: https://github.com/gadm12/caloriQ_app
+      - button "Back to top":
+        - img
+        - text: Back to top
+    - contentinfo [ref=e95]:
+      - generic [ref=e98]:
+        - text: Made with
+        - link "Material for MkDocs" [ref=e99] [cursor=pointer]:
+          - /url: https://squidfunk.github.io/mkdocs-material/

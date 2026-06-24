@@ -1,1 +1,37 @@
-site_name: My Docs
+site_name: CaloriQ
+site_description: Technical documentation for CaloriQ — a free nutrition and calorie tracking SPA
+site_author: Mohamed Gadm
+
+nav:
+  - Documentation:
+    - Home: index.md
+    - Tech Stack: tech-stack.md
+    - Database: database.md
+    - API Integration: api.md
+    - Features: features.md
+    - Authentication: authentication.md
+    - Stripe Donations: stripe.md
+    - Setup: setup.md
+
+theme:
+  name: material
+  logo: assets/logo3.png
+  favicon: assets/logo3.png
+  palette:
+    scheme: slate
+    primary: teal
+    accent: teal
+  font:
+    text: Inter
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.instant
+    - navigation.top
+    - search.highlight
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search
