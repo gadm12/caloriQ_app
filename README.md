@@ -2,6 +2,8 @@
 
 > A free, full-stack nutrition and calorie tracking SPA — built as a course project at Code Platoon.
 
+🔗 **Live App:** [caloriq-psi.vercel.app](https://caloriq-psi.vercel.app/)
+
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite)
 ![Supabase](https://img.shields.io/badge/Supabase-green?logo=supabase)
@@ -33,14 +35,14 @@ CaloriQ gives users a focused nutrition tracking experience — for free.
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 18 + Vite, React Router DOM, TailwindCSS, Axios |
-| Backend | Supabase (PostgreSQL + Auth + REST API) |
-| Serverless | Supabase Edge Functions (Deno) |
-| External API | Open Food Facts (free, no key required) |
-| Payments | Stripe |
-| Deployment | Vercel |
+| Layer        | Technology                                            |
+| ------------ | ----------------------------------------------------- |
+| Frontend     | React 18 + Vite, React Router DOM, TailwindCSS, Axios |
+| Backend      | Supabase (PostgreSQL + Auth + REST API)               |
+| Serverless   | Supabase Edge Functions (Deno)                        |
+| External API | Open Food Facts (free, no key required)               |
+| Payments     | Stripe                                                |
+| Deployment   | Vercel                                                |
 
 ---
 
@@ -75,5 +77,6 @@ Full technical documentation is available inside the app under the **Docs** tab.
 ## Author
 
 **Mohamed Gadm**
+
 - GitHub: [github.com/gadm12](https://github.com/gadm12)
 - LinkedIn: [linkedin.com/in/mohamed-gad-67108921a](https://www.linkedin.com/in/mohamed-gad-67108921a/)
